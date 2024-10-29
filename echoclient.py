@@ -7,5 +7,5 @@ s.connect(address)
 while True:
     msg=input("Enter message: ")
     s.send(msg.encode())
-    data=s.recv(BUFSIZE)
+    data=s.recv(BUFSIZE) 
     print(f"Received: {data.decode()}")
