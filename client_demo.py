@@ -1,6 +1,6 @@
 import socket
 port=int(input("port no: "))
-address=("localhost",port)
+address=("192.168.31.66",port)
 BUFSIZE=1024
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.connect(address)
