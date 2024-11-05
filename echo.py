@@ -1,22 +1,25 @@
 import socket
 
 port = 2500
-BUFSIZE = 1024
-
-dict={'1':'one','2':'two','3':'three'}
-sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-addr=sock.bind(('0.0.0.0',port))
+host = "0.0.0.0"
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.bind((host, port))
 sock.listen(1)
 print("waiting for connection...")
 c_sock, addr = sock.accept()
-print(f"Connected by {addr}")
 
-while True:
-    data = c_sock.recv(BUFSIZE).decode()
-    if not data:
-        break
-    try:
-        c_sock.send(dict(int[data]).encode())
-    except:
-        c_sock.send("try again".encode())
+print(f"Connected by {addr}")
+data = c_sock.recv(1024)
+print(data.decode())
+filename = input("file name to send: (c:/test/sample.bin) ")
+
+print(f"sending {filename}...")
+fn = filename.split("/")
+c_sock.sendall(fn[-1].encode())
+
+with open(filename, "rb") as f:
+    c_sock.sendfile(f, 0)
+
+print("sending complete")
+c_sock.close()
 sock.close()
