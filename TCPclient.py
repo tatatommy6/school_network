@@ -1,17 +1,20 @@
 import socket
-#tcp 소켓 생성
-port=int(input("Enter port number: "))
-sock=socket.create_connection(('192.168.31.20', port))
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+host="192.168.31.66"
+port=2500
+BUFSIZE=1024
+s.connect((host, port))
+s.send("i`m ready".encode())
+fn=s.recv(1024).decode()
 
-#데이터 전송
-msg=input("Enter message: ")
-print("Sending {}".format(msg))
-sock.sendall(msg.encode())
-
-#데이터 수신
-data=sock.recv(1024)
-print("received {}".format(data.decode()))
-print("closing connection")
-
-#소켓 닫기
-sock.close()
+with open('recv/{filename}.txt'+fn, 'wb') as f:
+    print("file opened ")
+    print("receiving file...")
+    while True:
+        data=s.recv(8192)
+        if not data:
+            break
+        f.write(data)
+print('download complete')
+s.close()
+print('connection closed')
