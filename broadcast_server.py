@@ -5,4 +5,3 @@ s.bind(("", 10001))
 while True:
     msg,addr=s.recvfrom(1024)
     print(f"Received: {msg.decode()}")
-    
